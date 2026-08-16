@@ -6,7 +6,12 @@
 # would make a sequencing failure indistinguishable from a flaky build.
 name: project-ci
 on:
+  # main only. Post-merge verification refuses a SHA carrying two check runs of
+  # the same name as ambiguous provenance, and an unfiltered `push:` attaches one
+  # per ref update — so a branch fast-forwarded onto a merge commit would fail the
+  # run for a reason indistinguishable from the merge ordering it is measuring.
   push:
+    branches: [main]
   pull_request:
 jobs:
   verify:
