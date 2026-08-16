@@ -1,0 +1,17 @@
+# The post-merge check the control plane waits on.
+#
+# Its job is to exist, complete, and report a conclusion against an exact merge commit — the
+# control plane consumes it by SHA, not by branch tip. Keeping it trivial is deliberate: the
+# acceptance is about merge ordering and gating, and a check that could fail for its own reasons
+# would make a sequencing failure indistinguishable from a flaky build.
+name: project-ci
+on:
+  push:
+  pull_request:
+jobs:
+  verify:
+    name: project-ci
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - run: test -f README.md
